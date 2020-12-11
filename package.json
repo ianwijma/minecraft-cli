@@ -1,0 +1,44 @@
+{
+  "name": "minecraft-cli",
+  "version": "1.0.0",
+  "description": "Minecraft's crossplatform CLI tool managing servers",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "",
+  "bin": "bin/mccli",
+  "scripts": {
+    "dev": "node ./src/index.js",
+    "clean": "rimraf ./dist/ ./exec/",
+    "build": "npm run clean",
+    "test": "npm run build && ava --verbose",
+    "bundle": "npm run build && pkg . --out-dir ./exec/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianwijma/minecraft-cli.git"
+  },
+  "pkg": {
+    "scripts": "src/**/*.js"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.5",
+    "@types/yargs": "^15.0.11",
+    "ava": "^3.14.0",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "pkg": "^4.4.9",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "@types/yaml": "^1.9.7",
+    "fs-extra": "^9.0.1",
+    "package": "^1.0.1",
+    "yaml": "^1.10.0",
+    "yargs": "^16.2.0"
+  },
+  "bugs": {
+    "url": "https://github.com/ianwijma/minecraft-cli/issues"
+  },
+  "homepage": "https://github.com/ianwijma/minecraft-cli#readme"
+}
