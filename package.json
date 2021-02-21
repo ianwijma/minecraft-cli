@@ -1,44 +1,84 @@
 {
   "name": "minecraft-cli",
-  "version": "1.0.0",
-  "description": "Minecraft's crossplatform CLI tool managing servers",
-  "main": "index.js",
-  "license": "MIT",
-  "author": "",
-  "bin": "bin/mccli",
-  "scripts": {
-    "dev": "node ./src/index.js",
-    "clean": "rimraf ./dist/ ./exec/",
-    "build": "npm run clean",
-    "test": "npm run build && ava --verbose",
-    "bundle": "npm run build && pkg . --out-dir ./exec/"
+  "description": "Minecraft's CLI tool managing servers and clients",
+  "version": "0.0.1",
+  "author": "Ian Wijma @ianwijma",
+  "bin": {
+    "mccli": "./bin/run"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ianwijma/minecraft-cli.git"
-  },
-  "pkg": {
-    "scripts": "src/**/*.js"
-  },
+  "bugs": "https://github.com/ianwijma/minecraft-cli/issues",
   "devDependencies": {
-    "@types/fs-extra": "^9.0.5",
-    "@types/yargs": "^15.0.11",
-    "ava": "^3.14.0",
-    "eslint": "^7.2.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
-    "pkg": "^4.4.9",
-    "rimraf": "^3.0.2"
-  },
-  "dependencies": {
+    "@oclif/dev-cli": "^1.26.0",
+    "@oclif/test": "^1.2.8",
+    "@types/axios": "^0.14.0",
+    "@types/chai": "^4.2.15",
+    "@types/fs-extra": "^9.0.7",
+    "@types/inquirer": "^7.3.1",
+    "@types/mocha": "^5.2.7",
+    "@types/nanoid": "^2.1.0",
+    "@types/node": "^10.17.54",
     "@types/yaml": "^1.9.7",
-    "fs-extra": "^9.0.1",
-    "package": "^1.0.1",
-    "yaml": "^1.10.0",
-    "yargs": "^16.2.0"
+    "chai": "^4.3.0",
+    "eslint": "^5.16.0",
+    "eslint-config-oclif": "^3.1.0",
+    "eslint-config-oclif-typescript": "^0.1.0",
+    "globby": "^10.0.2",
+    "mocha": "^5.2.0",
+    "nyc": "^14.1.1",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.9"
   },
-  "bugs": {
-    "url": "https://github.com/ianwijma/minecraft-cli/issues"
+  "engines": {
+    "node": ">=8.0.0"
   },
-  "homepage": "https://github.com/ianwijma/minecraft-cli#readme"
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/ianwijma/minecraft-cli",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "none",
+  "main": "lib/index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "mccli",
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-not-found",
+      "@oclif/plugin-commands",
+      "@oclif/plugin-autocomplete",
+      "conf-cli"
+    ]
+  },
+  "repository": "ianwijma/minecraft-cli",
+  "scripts": {
+    "postpack": "rm -f oclif.manifest.json",
+    "posttest": "eslint . --ext .ts --config .eslintrc",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
+    "version": "oclif-dev readme && git add README.md"
+  },
+  "types": "lib/index.d.ts",
+  "dependencies": {
+    "@oclif/command": "^1.8.0",
+    "@oclif/config": "^1.17.0",
+    "@oclif/plugin-autocomplete": "^0.3.0",
+    "@oclif/plugin-commands": "^1.3.0",
+    "@oclif/plugin-help": "^3.2.2",
+    "@oclif/plugin-not-found": "^1.2.4",
+    "@types/lodash.get": "^4.4.6",
+    "axios": "^0.21.1",
+    "cli-ux": "^5.5.1",
+    "conf-cli": "^0.1.9",
+    "fs-extra": "^8.1.0",
+    "inquirer": "^6.5.2",
+    "lodash.get": "^4.4.2",
+    "nanoid": "^3.1.20",
+    "tslib": "^1.14.1",
+    "yaml": "^1.10.0"
+  }
 }
