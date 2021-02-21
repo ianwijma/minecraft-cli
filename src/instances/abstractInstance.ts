@@ -58,19 +58,56 @@ export default class AbstractInstance {
     return yamlParse(content);
   }
 
-  private createInstanceConfig() {
+  protected getInstanceConfig(): InstanceConfig.Root {
+    return this.instanceConfig;
+  }
+
+  protected updateInstanceConfig(data: InstanceConfig.Root) {
     const path = join(this.instancePath, AbstractInstance.configName);
-    const data: InstanceConfig.Root = {
-      versionId: "",
-      uuid: nanoid(),
-      metadata: {},
-    };
     const content = yamlStringify(data);
     writeFileSync(path, content, "utf8");
   }
 
-  protected getInstanceConfig(): InstanceConfig.Root {
-    return this.instanceConfig;
+  private createInstanceConfig() {
+    this.updateInstanceConfig({
+      versionId: "",
+      uuid: nanoid(),
+      metadata: {},
+    });
+  }
+
+  protected updateInstanceConfigKey(key: string, value: any) {
+    this.updateInstanceConfig({
+      ...this.instanceConfig,
+      [key]: value,
+    });
+
+    this.reloadInstanceConfig();
+  }
+
+  updateInstanceConfigMetadata(metadata: InstanceConfig.Metadata) {
+    this.updateInstanceConfig({
+      ...this.instanceConfig,
+      metadata: metadata,
+    });
+
+    this.reloadInstanceConfig();
+  }
+
+  updateInstanceConfigMetadataKey(key: string, value: any) {
+    this.updateInstanceConfig({
+      ...this.instanceConfig,
+      metadata: {
+        ...this.instanceConfig.metadata,
+        [key]: value,
+      },
+    });
+
+    this.reloadInstanceConfig();
+  }
+
+  private reloadInstanceConfig() {
+    this.instanceConfig = this.readInstanceConfig();
   }
 
   protected getInstanceConfigMetadata(

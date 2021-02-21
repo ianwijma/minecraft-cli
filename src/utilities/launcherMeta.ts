@@ -1,6 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { MinecraftPackage } from "./namespaces/minecraftPackage";
-import { MinecraftVersion } from "./namespaces/minecraftVersion";
+import { MinecraftVersion } from "../namespaces/minecraftVersion";
 
 export default class LauncherMeta {
   private static schema: string = "https";

@@ -2,9 +2,10 @@ import AbstractServerInstance from "./abstractServerInstance";
 import { prompt } from "inquirer";
 import axios from "axios";
 import { MinecraftVersion } from "../namespaces/minecraftVersion";
-import { version } from "@oclif/command/lib/flags";
 import { MinecraftPackage } from "../namespaces/minecraftPackage";
 import LauncherMeta from "../utilities/launcherMeta";
+import Downloader from "../utilities/downloader";
+import { join } from "path";
 
 export default class VanillaServerInstance extends AbstractServerInstance {
   private showSnapshots: boolean = false;
@@ -30,7 +31,8 @@ export default class VanillaServerInstance extends AbstractServerInstance {
   }
 
   async new(query: string): Promise<void> {
-    this.version = await this.getVersion(query);
+    const { id } = (this.version = await this.getVersion(query));
+    this.updateInstanceConfigKey("versionId", id);
     await this.installVersion();
   }
 
@@ -42,7 +44,13 @@ export default class VanillaServerInstance extends AbstractServerInstance {
       throw new Error(`Version ${id} does not has any server files`);
     }
 
-    console.log(server);
+    const { sha1, size, url } = server;
+    const target = join(this.instancePath, "server.jar");
+
+    const downloader = new Downloader();
+    downloader.setDownloadThreads(this.downloadThreads);
+    downloader.addDownload({ sha1, size, url, target });
+    await downloader.run();
   }
 
   private async getManifest(): Promise<MinecraftPackage.Root> {
